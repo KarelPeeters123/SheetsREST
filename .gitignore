@@ -1,0 +1,7 @@
+build/
+.idea/
+.gradle/
+gradle/
+out/
+src/main/resources/credentials.json
+tokens/StoredCredential

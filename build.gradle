@@ -1,0 +1,53 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.5.RELEASE")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+	baseName = 'SheetRest'
+	version =  '0.1.0'
+}
+
+repositories {
+	mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+	//sheets stuff
+	compile 'com.google.api-client:google-api-client:1.23.0'
+	compile 'com.google.oauth-client:google-oauth-client-jetty:1.23.0'
+	compile 'com.google.apis:google-api-services-sheets:v4-rev516-1.23.0'
+
+	// needed for Spring Boot -> embedded tomcat
+	compile("org.springframework.boot:spring-boot-starter-web")
+	// needed because we use jsp
+	compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+	// needed because we use jsp
+	compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-jasper', version: '9.0.10'
+	// needed because we use jsp
+	compile group: 'org.eclipse.jdt.core.compiler', name: 'ecj', version: '4.4.2'
+	//JPA
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile('mysql:mysql-connector-java:8.0.13')
+	// needed for in-memory database
+	compile("com.h2database:h2")
+	// Jpa
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('mysql:mysql-connector-java:8.0.13')
+	// needed for in-memory database
+	compile("com.h2database:h2")
+}
