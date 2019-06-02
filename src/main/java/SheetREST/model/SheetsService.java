@@ -30,6 +30,8 @@ public class SheetsService {
 	private static final String APPLICATION_NAME = "Google Sheets API Java Quickstart";
 	private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 	private static final String TOKENS_DIRECTORY_PATH = "tokens";
+	private static final String spreadsheetId = "187aXbNM3E5LEnSx1ENrI4ecjEuWUK4LjKRa1JdMlomU";
+	private static final String sheetName = "Expenses";
 
 	/**
 	 * Global instance of the scopes required by this quickstart.
@@ -62,18 +64,31 @@ public class SheetsService {
 		return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
 	}
 
-	/**
-	 * Prints the names and majors of students in a sample spreadsheet:
-	 * https://docs.google.com/spreadsheets/d/187aXbNM3E5LEnSx1ENrI4ecjEuWUK4LjKRa1JdMlomU/edit#gid=0
-	 */
-	public void writeSamples() throws IOException, GeneralSecurityException {
-		// Build a new authorized API client service.
+	public Sheets setUp() throws IOException, GeneralSecurityException {
 		final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-		final String spreadsheetId = "187aXbNM3E5LEnSx1ENrI4ecjEuWUK4LjKRa1JdMlomU";
-		final String range = "Expenses!B2:IL";
 		Sheets sheets = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
 				.setApplicationName(APPLICATION_NAME)
 				.build();
+		return sheets;
+	}
+
+	public void writeCell(Cell cell) throws IOException, GeneralSecurityException {
+		Sheets sheets = setUp();
+		List<List<Object>> values = Arrays.asList(Arrays.asList(cell.getValue()));
+		ValueRange body = new ValueRange().setValues(values);
+		AppendValuesResponse result = sheets
+				.spreadsheets().values()
+				.append(spreadsheetId, sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn(), body)
+				.setValueInputOption("RAW")
+				.execute();
+	}
+	public void writeCells(List<Cell> cells) throws IOException, GeneralSecurityException {
+		for (Cell cell : cells) {
+			writeCell(cell);
+		}
+	}
+	public void writeSamples() throws IOException, GeneralSecurityException {
+		Sheets sheets = setUp();
 		ValueRange body = new ValueRange().setValues(sampleValues());
 		AppendValuesResponse result = sheets
 				.spreadsheets().values()
