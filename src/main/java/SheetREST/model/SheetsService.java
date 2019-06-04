@@ -13,6 +13,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.AppendValuesResponse;
+import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import org.springframework.stereotype.Service;
 
@@ -130,9 +131,9 @@ public class SheetsService {
 		Sheets sheets = setUp();
 		List<List<Object>> values = Arrays.asList(Arrays.asList(cell.getValue()));
 		ValueRange body = new ValueRange().setValues(values);
-		AppendValuesResponse result = sheets
+		UpdateValuesResponse result = sheets
 				.spreadsheets().values()
-				.append(spreadsheetId, sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn(), body)
+				.update(spreadsheetId, sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn(), body)
 				.setValueInputOption("RAW")
 				.execute();
 	}
