@@ -25,6 +25,17 @@ public class RESTController {
 		}
 	}
 
+	@PostMapping("/cell/{date}")
+	@ResponseStatus(HttpStatus.OK)
+	public void getColumn(@PathVariable String date, @RequestBody Cell cell) {
+		try {
+			cell = service.getCell(cell, date);
+			service.writeCell(cell);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	@PostMapping("/cell")
 	@ResponseStatus(HttpStatus.OK)
 	public void writeCell(@Valid @RequestBody Cell cell) {
