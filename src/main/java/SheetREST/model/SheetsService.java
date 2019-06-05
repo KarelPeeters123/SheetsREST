@@ -134,7 +134,7 @@ public class SheetsService {
 				.values()
 				.get(
 						spreadsheetId,
-						sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn() + String.valueOf(Integer.parseInt(cell.getRow()) + 3))
+						sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn() + String.valueOf(Integer.parseInt(cell.getRow()) + 5))
 				.execute();
 		int increment = result.getValues().size();
 		System.out.println("increment: " + increment);
