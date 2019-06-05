@@ -30,7 +30,7 @@ public class RESTController {
 	public void getColumn(@PathVariable String date, @RequestBody Cell cell) {
 		try {
 			cell = service.getCell(cell, date);
-			service.writeCell(cell);
+			service.writeExpense(cell);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

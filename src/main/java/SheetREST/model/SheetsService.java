@@ -127,6 +127,28 @@ public class SheetsService {
 		cell.setColumn(findColumnString(date));
 		return cell;
 	}
+	public int getIncrement(Cell cell) throws IOException, GeneralSecurityException {
+		Sheets sheets = setUp();
+		ValueRange result = sheets
+				.spreadsheets()
+				.values()
+				.get(
+						spreadsheetId,
+						sheetName + "!" + cell.getColumn() + cell.getRow() + ":" + cell.getColumn() + String.valueOf(Integer.parseInt(cell.getRow()) + 3))
+				.execute();
+		int increment = result.getValues().size();
+		System.out.println("increment: " + increment);
+		return increment;
+	}
+	public Cell incrementCell(Cell cell, int increment) {
+		cell.setRow(String.valueOf(Integer.parseInt(cell.getRow()) + increment) );
+		System.out.println("row: " + cell.getRow());
+		return cell;
+	}
+	public void writeExpense(Cell cell) throws IOException, GeneralSecurityException {
+		cell = incrementCell(cell, getIncrement(cell));
+		writeCell(cell);
+	}
 	public void writeCell(Cell cell) throws IOException, GeneralSecurityException {
 		Sheets sheets = setUp();
 		List<List<Object>> values = Arrays.asList(Arrays.asList(cell.getValue()));
